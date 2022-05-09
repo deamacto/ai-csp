@@ -9,6 +9,34 @@ public class Board {
         this.board = board;
     }
 
+    public boolean checkSameAmount(int cordX, int cordY) {
+        int oneInRow = 0;
+        int oneInColumn = 0;
+        int zeroInRow = 0;
+        int zeroInColumn = 0;
+
+        for(int i = 0; i < board.length; i++) {
+            for(int j = 0; j < board[0].length; j++) {
+                if(j == cordY) {
+                    if(board[i][j] == 1) {
+                        oneInColumn += 1;
+                    } else if(board[i][j] == 0) {
+                        zeroInColumn += 1;
+                    }
+                } else if(i == cordX) {
+                    if(board[i][j] == 1) {
+                        oneInRow += 1;
+                    } else if(board[i][j] == 0) {
+                       zeroInRow += 1;
+                    }
+                }
+            }
+        }
+
+        int half = board.length/2;
+        return oneInColumn <= half && zeroInColumn <= half && oneInRow <= half && zeroInRow <= half;
+    }
+
     public boolean checkSameAmountOnWholeBoard() {
         ArrayList<Integer> zeros = new ArrayList<>();
         ArrayList<Integer> ones = new ArrayList<>();
