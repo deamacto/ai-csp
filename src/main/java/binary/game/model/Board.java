@@ -1,6 +1,7 @@
 package binary.game.model;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Board {
     private Integer[][] board;
@@ -9,50 +10,52 @@ public class Board {
         this.board = board;
     }
 
-    public boolean checkNotThree(int cordX, int cordY) {
-        Integer lastNumberRow = -1;
-        Integer currentNumberRow = null;
-        int howManyInRow = 0;
+    public void setTile(int cordX, int cordY, Integer value) {
+        if(board[cordY][cordX] == null) {
+            board[cordY][cordX] = value;
+        }
+    }
 
-        Integer lastNumberColumn = -1;
-        Integer currentNumberColumn = null;
-        int howManyInColumn = 0;
+    public boolean checkNotThree(int cordX, int cordY) {
+        Integer lastNumber = -1;
+        int howMany = 0;
 
         for(int i = 0; i < board.length; i++) {
-            for(int j = 0; j < board[0].length; j++) {
-                if(lastNumberRow != null && i == cordX) {
-                    currentNumberRow = board[i][j];
-                    if(lastNumberRow.equals(currentNumberRow)) {
-                        howManyInRow += 1;
-                        if(howManyInRow >= 3) {
-                            return false;
-                        }
-                    } else {
-                        howManyInRow = 1;
-                        lastNumberRow = currentNumberRow;
-                    }
+            if(board[cordY][i] != null) {
+                if(Objects.equals(board[cordY][i], lastNumber)) {
+                    howMany += 1;
                 } else {
-                    howManyInRow = 1;
-                    lastNumberRow = null;
+                    howMany = 1;
                 }
-
-                if(lastNumberColumn != null && j == cordY) {
-                    currentNumberColumn = board[i][j];
-                    if(lastNumberColumn.equals(currentNumberColumn)) {
-                        howManyInColumn += 1;
-                        if(howManyInColumn >= 3) {
-                            return false;
-                        }
-                    } else {
-                        howManyInColumn = 1;
-                        lastNumberColumn = currentNumberColumn;
-                    }
-                } else {
-                    howManyInColumn = 1;
-                    lastNumberColumn = null;
-                }
+            } else {
+                howMany = 1;
             }
+
+            if(howMany >= 3) {
+                return false;
+            }
+
+            lastNumber = board[cordY][i];
         }
+
+        for(int i = 0; i < board.length; i++) {
+            if(board[i][cordX] != null) {
+                if(Objects.equals(board[i][cordX], lastNumber)) {
+                    howMany += 1;
+                } else {
+                    howMany = 1;
+                }
+            } else {
+                howMany = 1;
+            }
+
+            if(howMany >= 3) {
+                return false;
+            }
+
+            lastNumber = board[cordY][i];
+        }
+
         return true;
     }
 
