@@ -9,6 +9,53 @@ public class Board {
         this.board = board;
     }
 
+    public boolean checkNotThree(int cordX, int cordY) {
+        Integer lastNumberRow = -1;
+        Integer currentNumberRow = null;
+        int howManyInRow = 0;
+
+        Integer lastNumberColumn = -1;
+        Integer currentNumberColumn = null;
+        int howManyInColumn = 0;
+
+        for(int i = 0; i < board.length; i++) {
+            for(int j = 0; j < board[0].length; j++) {
+                if(lastNumberRow != null && i == cordX) {
+                    currentNumberRow = board[i][j];
+                    if(lastNumberRow.equals(currentNumberRow)) {
+                        howManyInRow += 1;
+                        if(howManyInRow >= 3) {
+                            return false;
+                        }
+                    } else {
+                        howManyInRow = 1;
+                        lastNumberRow = currentNumberRow;
+                    }
+                } else {
+                    howManyInRow = 1;
+                    lastNumberRow = null;
+                }
+
+                if(lastNumberColumn != null && j == cordY) {
+                    currentNumberColumn = board[i][j];
+                    if(lastNumberColumn.equals(currentNumberColumn)) {
+                        howManyInColumn += 1;
+                        if(howManyInColumn >= 3) {
+                            return false;
+                        }
+                    } else {
+                        howManyInColumn = 1;
+                        lastNumberColumn = currentNumberColumn;
+                    }
+                } else {
+                    howManyInColumn = 1;
+                    lastNumberColumn = null;
+                }
+            }
+        }
+        return true;
+    }
+
     public boolean checkSameAmount(int cordX, int cordY) {
         int oneInRow = 0;
         int oneInColumn = 0;
