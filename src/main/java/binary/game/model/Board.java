@@ -1,6 +1,7 @@
 package binary.game.model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Objects;
 
 public class Board {
@@ -85,6 +86,11 @@ public class Board {
 
         int half = board.length/2;
         return oneInColumn <= half && zeroInColumn <= half && oneInRow <= half && zeroInRow <= half;
+    }
+
+    public boolean checkUnique(int cordX, int cordY) {
+        Integer[] row = board[cordY];
+        Integer[] column = Arrays.stream(board).map(r -> r[cordX]).toArray(Integer[]::new);
     }
 
     public boolean checkSameAmountOnWholeBoard() {
