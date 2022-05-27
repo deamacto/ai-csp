@@ -1,8 +1,11 @@
 package binary.game.model;
 
+import util.Coordinates;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
+
 
 public class Board {
     private Integer[][] board;
@@ -91,6 +94,19 @@ public class Board {
     public boolean checkUnique(int cordX, int cordY) {
         Integer[] row = board[cordY];
         Integer[] column = Arrays.stream(board).map(r -> r[cordX]).toArray(Integer[]::new);
+
+        for(int i = 0; i < board.length; i++) {
+            if(Arrays.equals(row, board[i]) && i != cordY) {
+                return false;
+            }
+
+            int finalI = i;
+            Integer[] checkedColumn = Arrays.stream(board).map(r -> r[finalI]).toArray(Integer[]::new);
+            if(Arrays.equals(checkedColumn, column) && i != cordX) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public boolean checkSameAmountOnWholeBoard() {
@@ -127,6 +143,17 @@ public class Board {
         }
 
         return true;
+    }
+
+    public Coordinates findFirstEmptySpot() {
+        for(int i = 0; i < board.length; i++) {
+            for(int j = 0; j < board[0].length; j++) {
+                if(board[i][j] == null) {
+                    return new Coordinates(j, i);
+                }
+            }
+        }
+        return new Coordinates(-1, -1);
     }
 
     @Override
