@@ -51,6 +51,7 @@ public class Board {
         }
 
         howMany = 0;
+        lastNumber = -1;
 
         for(int i = 0; i < board.length; i++) {
             if(board[i][coordinates.x] != null) {
@@ -67,7 +68,7 @@ public class Board {
                 return false;
             }
 
-            lastNumber = board[coordinates.y][i];
+            lastNumber = board[i][coordinates.x];
         }
 
         return true;
@@ -107,15 +108,21 @@ public class Board {
         Integer[] row = board[coordinates.y];
         Integer[] column = Arrays.stream(board).map(r -> r[coordinates.x]).toArray(Integer[]::new);
 
-        for(int i = 0; i < board.length; i++) {
-            if(Arrays.equals(row, board[i]) && i != coordinates.y) {
-                return false;
+        if(Arrays.stream(row).noneMatch(Objects::isNull)) {
+            for(int i = 0; i < board.length; i++) {
+                if(Arrays.equals(row, board[i]) && i != coordinates.y) {
+                    return false;
+                }
             }
+        }
 
-            int finalI = i;
-            Integer[] checkedColumn = Arrays.stream(board).map(r -> r[finalI]).toArray(Integer[]::new);
-            if(Arrays.equals(checkedColumn, column) && i != coordinates.x) {
-                return false;
+        if(Arrays.stream(column).noneMatch(Objects::isNull)) {
+            for(int i = 0; i < board.length; i++) {
+                int finalI = i;
+                Integer[] checkedColumn = Arrays.stream(board).map(r -> r[finalI]).toArray(Integer[]::new);
+                if(Arrays.equals(checkedColumn, column) && i != coordinates.x) {
+                    return false;
+                }
             }
         }
         return true;
