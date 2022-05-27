@@ -39,6 +39,8 @@ public class Board {
             lastNumber = board[cordY][i];
         }
 
+        howMany = 0;
+
         for(int i = 0; i < board.length; i++) {
             if(board[i][cordX] != null) {
                 if(Objects.equals(board[i][cordX], lastNumber)) {
