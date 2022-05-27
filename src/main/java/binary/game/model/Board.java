@@ -79,20 +79,22 @@ public class Board {
         int zeroInRow = 0;
         int zeroInColumn = 0;
 
+        Integer[] column = Arrays.stream(board).map(r -> r[coordinates.x]).toArray(Integer[]::new);
+
         for(int i = 0; i < board.length; i++) {
-            for(int j = 0; j < board[0].length; j++) {
-                if(j == coordinates.y) {
-                    if(board[i][j] == 1) {
-                        oneInColumn += 1;
-                    } else if(board[i][j] == 0) {
-                        zeroInColumn += 1;
-                    }
-                } else if(i == coordinates.x) {
-                    if(board[i][j] == 1) {
-                        oneInRow += 1;
-                    } else if(board[i][j] == 0) {
-                       zeroInRow += 1;
-                    }
+            if(board[coordinates.y][i] != null){
+                if(board[coordinates.y][i] == 1) {
+                    oneInRow += 1;
+                } else if(board[coordinates.y][i] == 0) {
+                    zeroInRow += 1;
+                }
+            }
+
+            if(column[i] != null) {
+                if(column[i] == 1) {
+                    oneInColumn += 1;
+                } else if(column[i] == 0) {
+                    zeroInColumn += 1;
                 }
             }
         }
