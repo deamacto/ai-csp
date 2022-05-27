@@ -2,22 +2,30 @@ package binary.game.model;
 
 import util.Coordinates;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
 
 
 public class Board {
     private Integer[][] board;
+    public static final int[] domain = {0, 1};
 
     public Board(Integer[][] board) {
         this.board = board;
     }
 
-    public void setTile(int cordX, int cordY, Integer value) {
-        if(board[cordY][cordX] == null) {
-            board[cordY][cordX] = value;
+    public boolean setTileIfPossible(int cordX, int cordY, Integer value) {
+        if (board[cordY][cordX] != null) {
+            return false;
         }
+
+        board[cordY][cordX] = value;
+        if(!checkNotThree(cordX, cordY) || !checkSameAmount(cordX, cordY) || !checkUnique(cordX, cordY)) {
+            board[cordY][cordX] = null;
+            return false;
+        }
+
+        return true;
     }
 
     public boolean checkNotThree(int cordX, int cordY) {
@@ -111,41 +119,41 @@ public class Board {
         return true;
     }
 
-    public boolean checkSameAmountOnWholeBoard() {
-        ArrayList<Integer> zeros = new ArrayList<>();
-        ArrayList<Integer> ones = new ArrayList<>();
-
-        for(int i = 0; i < board.length; i++) {
-            zeros.add(0);
-            ones.add(0);
-        }
-
-        int zero = 0;
-        int one = 0;
-
-        for(int i = 0; i < board.length; i++) {
-            for(int j = 0; j < board[0].length; j++) {
-                if(board[i][j] == 1) {
-                    one += 1;
-                    ones.set(j, ones.get(j) + 1);
-                } else if(board[i][j] == 0) {
-                    zero += 1;
-                    zeros.set(j, zeros.get(j) +1);
-                }
-            }
-            if(zero != one) {
-                return false;
-            }
-        }
-
-        for(int i = 0; i < zeros.size(); i++) {
-            if(!zeros.get(i).equals(ones.get(i))) {
-                return false;
-            }
-        }
-
-        return true;
-    }
+//    public boolean checkSameAmountOnWholeBoard() {
+//        ArrayList<Integer> zeros = new ArrayList<>();
+//        ArrayList<Integer> ones = new ArrayList<>();
+//
+//        for(int i = 0; i < board.length; i++) {
+//            zeros.add(0);
+//            ones.add(0);
+//        }
+//
+//        int zero = 0;
+//        int one = 0;
+//
+//        for(int i = 0; i < board.length; i++) {
+//            for(int j = 0; j < board[0].length; j++) {
+//                if(board[i][j] == 1) {
+//                    one += 1;
+//                    ones.set(j, ones.get(j) + 1);
+//                } else if(board[i][j] == 0) {
+//                    zero += 1;
+//                    zeros.set(j, zeros.get(j) +1);
+//                }
+//            }
+//            if(zero != one) {
+//                return false;
+//            }
+//        }
+//
+//        for(int i = 0; i < zeros.size(); i++) {
+//            if(!zeros.get(i).equals(ones.get(i))) {
+//                return false;
+//            }
+//        }
+//
+//        return true;
+//    }
 
     public Coordinates findFirstEmptySpot() {
         for(int i = 0; i < board.length; i++) {
