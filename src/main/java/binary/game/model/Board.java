@@ -14,27 +14,27 @@ public class Board {
         this.board = board;
     }
 
-    public boolean setTileIfPossible(int cordX, int cordY, Integer value) {
-        if (board[cordY][cordX] != null) {
+    public boolean setTileIfPossible(Coordinates coordinates, Integer value) {
+        if (board[coordinates.y][coordinates.x] != null) {
             return false;
         }
 
-        board[cordY][cordX] = value;
-        if(!checkNotThree(cordX, cordY) || !checkSameAmount(cordX, cordY) || !checkUnique(cordX, cordY)) {
-            board[cordY][cordX] = null;
+        board[coordinates.y][coordinates.x] = value;
+        if(!checkNotThree(coordinates) || !checkSameAmount(coordinates) || !checkUnique(coordinates)) {
+            board[coordinates.y][coordinates.x] = null;
             return false;
         }
 
         return true;
     }
 
-    public boolean checkNotThree(int cordX, int cordY) {
+    public boolean checkNotThree(Coordinates coordinates) {
         Integer lastNumber = -1;
         int howMany = 0;
 
         for(int i = 0; i < board.length; i++) {
-            if(board[cordY][i] != null) {
-                if(Objects.equals(board[cordY][i], lastNumber)) {
+            if(board[coordinates.y][i] != null) {
+                if(Objects.equals(board[coordinates.y][i], lastNumber)) {
                     howMany += 1;
                 } else {
                     howMany = 1;
@@ -47,14 +47,14 @@ public class Board {
                 return false;
             }
 
-            lastNumber = board[cordY][i];
+            lastNumber = board[coordinates.y][i];
         }
 
         howMany = 0;
 
         for(int i = 0; i < board.length; i++) {
-            if(board[i][cordX] != null) {
-                if(Objects.equals(board[i][cordX], lastNumber)) {
+            if(board[i][coordinates.x] != null) {
+                if(Objects.equals(board[i][coordinates.x], lastNumber)) {
                     howMany += 1;
                 } else {
                     howMany = 1;
@@ -67,13 +67,13 @@ public class Board {
                 return false;
             }
 
-            lastNumber = board[cordY][i];
+            lastNumber = board[coordinates.y][i];
         }
 
         return true;
     }
 
-    public boolean checkSameAmount(int cordX, int cordY) {
+    public boolean checkSameAmount(Coordinates coordinates) {
         int oneInRow = 0;
         int oneInColumn = 0;
         int zeroInRow = 0;
@@ -81,13 +81,13 @@ public class Board {
 
         for(int i = 0; i < board.length; i++) {
             for(int j = 0; j < board[0].length; j++) {
-                if(j == cordY) {
+                if(j == coordinates.y) {
                     if(board[i][j] == 1) {
                         oneInColumn += 1;
                     } else if(board[i][j] == 0) {
                         zeroInColumn += 1;
                     }
-                } else if(i == cordX) {
+                } else if(i == coordinates.x) {
                     if(board[i][j] == 1) {
                         oneInRow += 1;
                     } else if(board[i][j] == 0) {
@@ -101,18 +101,18 @@ public class Board {
         return oneInColumn <= half && zeroInColumn <= half && oneInRow <= half && zeroInRow <= half;
     }
 
-    public boolean checkUnique(int cordX, int cordY) {
-        Integer[] row = board[cordY];
-        Integer[] column = Arrays.stream(board).map(r -> r[cordX]).toArray(Integer[]::new);
+    public boolean checkUnique(Coordinates coordinates) {
+        Integer[] row = board[coordinates.y];
+        Integer[] column = Arrays.stream(board).map(r -> r[coordinates.x]).toArray(Integer[]::new);
 
         for(int i = 0; i < board.length; i++) {
-            if(Arrays.equals(row, board[i]) && i != cordY) {
+            if(Arrays.equals(row, board[i]) && i != coordinates.y) {
                 return false;
             }
 
             int finalI = i;
             Integer[] checkedColumn = Arrays.stream(board).map(r -> r[finalI]).toArray(Integer[]::new);
-            if(Arrays.equals(checkedColumn, column) && i != cordX) {
+            if(Arrays.equals(checkedColumn, column) && i != coordinates.x) {
                 return false;
             }
         }
