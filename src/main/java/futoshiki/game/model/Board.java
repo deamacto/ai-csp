@@ -24,6 +24,10 @@ public class Board {
         return true;
     }
 
+    public boolean checkGreaterAndLowerConstraints(Coordinates coordinates) {
+
+    }
+
     @Override
     public String toString() {
         StringBuilder f = new StringBuilder("Futoshiki \n");
