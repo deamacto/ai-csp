@@ -17,13 +17,13 @@ public class DataType {
             size = 10;
         } else if(game == Game.FUTOSHIKI4x4) {
             file = "src/data/futoshiki_4x4";
-            size = 7;
+            size = 4;
         } else if(game == Game.FUTOSHIKI5x5) {
             file = "src/data/futoshiki_5x5";
-            size = 9;
+            size = 5;
         } else if(game == Game.FUTOSHIKI6x6) {
             file = "src/data/futoshiki_6x6";
-            size = 11;
+            size = 6;
         }
     }
 }
