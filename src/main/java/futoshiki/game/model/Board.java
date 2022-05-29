@@ -1,5 +1,7 @@
 package futoshiki.game.model;
 
+import util.Coordinates;
+
 public class Board {
     private Field[][] board;
     public int[] domain;
@@ -7,6 +9,19 @@ public class Board {
     public Board(Field[][] board, int[] domain) {
         this.board = board;
         this.domain = domain;
+    }
+
+    public boolean checkNotSameNumber(Coordinates coordinates) {
+        for(int i = 0; i < board.length; i++) {
+            if(board[coordinates.y][i] == board[coordinates.y][coordinates.x] && i != coordinates.x) {
+                return false;
+            }
+
+            if(board[i][coordinates.x] == board[coordinates.y][coordinates.x] && i != coordinates.y) {
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override
