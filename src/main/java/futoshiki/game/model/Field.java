@@ -14,4 +14,18 @@ public class Field {
         this.bottomRelation = bottomRelation;
         this.number = number;
     }
+
+    public void normalize() {
+        if(this.leftRelation == Symbol.GREATER) {
+            this.leftRelation = Symbol.LESSTHAN;
+        } else if(this.leftRelation == Symbol.LESSTHAN) {
+            this.leftRelation = Symbol.GREATER;
+        }
+
+        if(this.topRelation == Symbol.GREATER) {
+            this.topRelation = Symbol.LESSTHAN;
+        } else if(this.topRelation == Symbol.LESSTHAN) {
+            this.topRelation = Symbol.GREATER;
+        }
+    }
 }
