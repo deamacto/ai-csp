@@ -1,6 +1,7 @@
 package binary.game;
 
 import binary.game.model.Board;
+import binary.game.model.Field;
 import datatype.DataType;
 
 import java.io.IOException;
@@ -10,7 +11,7 @@ import java.nio.file.Paths;
 public class ReadFile {
 
     public static Board readFile(DataType dt) {
-        Integer[][] board = new Integer[dt.size][dt.size];
+        Field[][] board = new Field[dt.size][dt.size];
         try {
             String content = new String(Files.readAllBytes(Paths.get(dt.file)));
             content = content.replace("\r\n", "");
@@ -23,7 +24,7 @@ public class ReadFile {
                 } else if(content.charAt(i) == 'x') {
                     symbol = null;
                 }
-                board[i / board[0].length][i % board[0].length] = symbol;
+                board[i / board[0].length][i % board[0].length] = new Field(symbol);
             }
         } catch (IOException e) {
             e.printStackTrace();

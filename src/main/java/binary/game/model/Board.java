@@ -7,21 +7,21 @@ import java.util.Objects;
 
 
 public class Board {
-    private Integer[][] board;
+    private Field[][] board;
     public static final int[] domain = {0, 1};
 
-    public Board(Integer[][] board) {
+    public Board(Field[][] board) {
         this.board = board;
     }
 
     public boolean setTileIfPossible(Coordinates coordinates, Integer value) {
-        if (board[coordinates.y][coordinates.x] != null) {
+        if (board[coordinates.y][coordinates.x].value != null) {
             return false;
         }
 
-        board[coordinates.y][coordinates.x] = value;
+        board[coordinates.y][coordinates.x].value = value;
         if(!checkNotThree(coordinates) || !checkSameAmount(coordinates) || !checkUnique(coordinates)) {
-            board[coordinates.y][coordinates.x] = null;
+            board[coordinates.y][coordinates.x].value = null;
             return false;
         }
 
@@ -33,8 +33,8 @@ public class Board {
         int howMany = 0;
 
         for(int i = 0; i < board.length; i++) {
-            if(board[coordinates.y][i] != null) {
-                if(Objects.equals(board[coordinates.y][i], lastNumber)) {
+            if(board[coordinates.y][i].value != null) {
+                if(Objects.equals(board[coordinates.y][i].value, lastNumber)) {
                     howMany += 1;
                 } else {
                     howMany = 1;
@@ -47,15 +47,15 @@ public class Board {
                 return false;
             }
 
-            lastNumber = board[coordinates.y][i];
+            lastNumber = board[coordinates.y][i].value;
         }
 
         howMany = 0;
         lastNumber = -1;
 
         for(int i = 0; i < board.length; i++) {
-            if(board[i][coordinates.x] != null) {
-                if(Objects.equals(board[i][coordinates.x], lastNumber)) {
+            if(board[i][coordinates.x].value != null) {
+                if(Objects.equals(board[i][coordinates.x].value, lastNumber)) {
                     howMany += 1;
                 } else {
                     howMany = 1;
@@ -68,7 +68,7 @@ public class Board {
                 return false;
             }
 
-            lastNumber = board[i][coordinates.x];
+            lastNumber = board[i][coordinates.x].value;
         }
 
         return true;
@@ -80,21 +80,21 @@ public class Board {
         int zeroInRow = 0;
         int zeroInColumn = 0;
 
-        Integer[] column = Arrays.stream(board).map(r -> r[coordinates.x]).toArray(Integer[]::new);
+        Field[] column = Arrays.stream(board).map(r -> r[coordinates.x]).toArray(Field[]::new);
 
         for(int i = 0; i < board.length; i++) {
-            if(board[coordinates.y][i] != null){
-                if(board[coordinates.y][i] == 1) {
+            if(board[coordinates.y][i].value != null){
+                if(board[coordinates.y][i].value == 1) {
                     oneInRow += 1;
-                } else if(board[coordinates.y][i] == 0) {
+                } else if(board[coordinates.y][i].value == 0) {
                     zeroInRow += 1;
                 }
             }
 
-            if(column[i] != null) {
-                if(column[i] == 1) {
+            if(column[i].value != null) {
+                if(column[i].value == 1) {
                     oneInColumn += 1;
-                } else if(column[i] == 0) {
+                } else if(column[i].value == 0) {
                     zeroInColumn += 1;
                 }
             }
@@ -105,12 +105,12 @@ public class Board {
     }
 
     public boolean checkUnique(Coordinates coordinates) {
-        Integer[] row = board[coordinates.y];
-        Integer[] column = Arrays.stream(board).map(r -> r[coordinates.x]).toArray(Integer[]::new);
+        Integer[] row = Arrays.stream(board[coordinates.y]).map(elem -> elem.value).toArray(Integer[]::new);
+        Integer[] column = Arrays.stream(board).map(r -> r[coordinates.x].value).toArray(Integer[]::new);
 
         if(Arrays.stream(row).noneMatch(Objects::isNull)) {
             for(int i = 0; i < board.length; i++) {
-                if(Arrays.equals(row, board[i]) && i != coordinates.y) {
+                if(Arrays.equals(row, Arrays.stream(board[i]).map(elem -> elem.value).toArray(Integer[]::new)) && i != coordinates.y) {
                     return false;
                 }
             }
@@ -119,7 +119,7 @@ public class Board {
         if(Arrays.stream(column).noneMatch(Objects::isNull)) {
             for(int i = 0; i < board.length; i++) {
                 int finalI = i;
-                Integer[] checkedColumn = Arrays.stream(board).map(r -> r[finalI]).toArray(Integer[]::new);
+                Integer[] checkedColumn = Arrays.stream(board).map(r -> r[finalI].value).toArray(Integer[]::new);
                 if(Arrays.equals(checkedColumn, column) && i != coordinates.x) {
                     return false;
                 }
@@ -167,7 +167,7 @@ public class Board {
     public Coordinates findFirstEmptySpot() {
         for(int i = 0; i < board.length; i++) {
             for(int j = 0; j < board[0].length; j++) {
-                if(board[i][j] == null) {
+                if(board[i][j].value == null) {
                     return new Coordinates(j, i);
                 }
             }
@@ -178,12 +178,12 @@ public class Board {
     @Override
     public String toString() {
         StringBuilder b = new StringBuilder("Binary \n");
-        for (Integer[] integers : board) {
+        for (Field[] field : board) {
             for (int j = 0; j < board[0].length; j++) {
-                if (integers[j] == null) {
+                if (field[j].value == null) {
                     b.append(" _ ");
                 } else {
-                    b.append(" ").append(integers[j]).append(" ");
+                    b.append(" ").append(field[j].value).append(" ");
                 }
             }
             b.append("\n");
@@ -193,9 +193,11 @@ public class Board {
 
     @Override
     protected Board clone() {
-        Integer[][] newBoard = new Integer[board.length][board.length];
+        Field[][] newBoard = new Field[board.length][board.length];
         for(int i = 0; i < board.length; i++) {
-            System.arraycopy(board[i], 0, newBoard[i], 0, board[0].length);
+            for(int j = 0; j < board.length; j++) {
+                newBoard[i][j] = new Field(board[i][j].value);
+            }
         }
         return new Board(newBoard);
     }
