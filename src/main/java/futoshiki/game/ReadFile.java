@@ -21,6 +21,10 @@ public class ReadFile {
         for(int i = 0; i < dt.size; i++) {
             domain[i] = i+1;
         }
+        ArrayList<Integer> currentDomain = new ArrayList<>();
+        for (int elem : domain) {
+            currentDomain.add(elem);
+        }
 
         try{
             String content = new String(Files.readAllBytes(Paths.get(dt.file)));
@@ -50,12 +54,7 @@ public class ReadFile {
                                 value = Character.getNumericValue(contentInLines[i].charAt(j));
                             }
 
-                            ArrayList<Integer> currentDomain = new ArrayList<>();
-                            for (int elem : domain) {
-                                currentDomain.add(elem);
-                            }
-
-                            Field field = new Field(left, right, top, bottom, value, currentDomain);
+                            Field field = new Field(left, right, top, bottom, value, new ArrayList<>(currentDomain));
                             board[i/2][j/2] = field;
                         }
                     }
