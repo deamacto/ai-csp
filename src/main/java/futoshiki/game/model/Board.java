@@ -2,6 +2,8 @@ package futoshiki.game.model;
 
 import util.Coordinates;
 
+import java.util.ArrayList;
+
 public class Board {
     private Field[][] board;
     public int[] domain;
@@ -22,6 +24,31 @@ public class Board {
             return false;
         }
 
+        return true;
+    }
+
+    public boolean deleteFromDomain() {
+
+    }
+
+    private boolean deleteFromDomainSameNumber(Coordinates cord) {
+        for (int i = 0; i < board.length; i++) {
+            if(board[cord.y][i].number == null) {
+                board[cord.y][i].domain.remove(board[cord.y][cord.x].number);
+
+                if(board[cord.y][i].domain.isEmpty()) {
+                    return false;
+                }
+            }
+
+            if(board[i][cord.x].number == null) {
+                board[i][cord.x].domain.remove(board[cord.y][cord.x].number);
+
+                if(board[i][cord.x].domain.isEmpty()) {
+                    return false;
+                }
+            }
+        }
         return true;
     }
 
@@ -124,9 +151,13 @@ public class Board {
     @Override
     public Board clone() {
         Field[][] newBoard = new Field[board.length][board.length];
+        ArrayList<Integer> newDomain = new ArrayList<>();
         for(int i = 0; i < board.length; i++) {
             for(int j = 0; j < board.length; j++) {
-                newBoard[i][j] = new Field(board[i][j].leftRelation, board[i][j].rightRelation, board[i][j].topRelation, board[i][j].bottomRelation, board[i][j].number);
+                for(Integer domainElement : board[i][j].domain) {
+                    newDomain.add(domainElement);
+                }
+                newBoard[i][j] = new Field(board[i][j].leftRelation, board[i][j].rightRelation, board[i][j].topRelation, board[i][j].bottomRelation, board[i][j].number, newDomain);
             }
         }
         return new Board(newBoard, domain);
