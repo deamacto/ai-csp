@@ -181,7 +181,7 @@ public class Board {
 
         for(int i = 0; i < board.length; i++) {
             for(int j = 0; j < board[0].length; j++) {
-                if(board[i][j].domain.size() < smallestDomain) {
+                if(board[i][j].number == null && board[i][j].domain.size() < smallestDomain) {
                     smallestDomain = board[i][j].domain.size();
                     smallestCord = new Coordinates(j, i);
                 }

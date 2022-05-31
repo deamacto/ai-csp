@@ -17,6 +17,7 @@ public class Solve {
     private static ArrayList<Board> backtrack(Board currentBoard, ArrayList<Board> solutions) {
         counter++;
         Coordinates spot = currentBoard.findSmallestDomainSpot();
+//        Coordinates spot = currentBoard.findFirstEmptySpot();
 
         if(spot.x == -1 && spot.y == -1) {
             solutions.add(currentBoard);
@@ -42,8 +43,8 @@ public class Solve {
 
     private static ArrayList<Board> forwardcheck(Board currentBoard, ArrayList<Board> solutions) {
         counter++;
-//        Coordinates spot = currentBoard.findSmallestDomainSpot();
-        Coordinates spot = currentBoard.findFirstEmptySpot();
+        Coordinates spot = currentBoard.findSmallestDomainSpot();
+//        Coordinates spot = currentBoard.findFirstEmptySpot();
 
         if(spot.x == -1 && spot.y == -1) {
             solutions.add(currentBoard);

@@ -17,13 +17,13 @@ public class Solve {
 
     private static ArrayList<Board> backtrack(Board currentBoard, ArrayList<Board> solutions) {
         counter++;
-        Coordinates spot = currentBoard.findFirstEmptySpot();
+        Coordinates spot = currentBoard.findSmallestDomainSpot();
 
         if(spot.x == -1 && spot.y == -1) {
             solutions.add(currentBoard);
         } else {
-            //for(int domainElement : Board.domain) {
-            for(int domainElement : currentBoard.sortDomainByOccurrences(currentBoard.getTile(spot).domain)) {
+            for(int domainElement : Board.domain) {
+//            for(int domainElement : currentBoard.sortDomainByOccurrences(currentBoard.getTile(spot).domain)) {
                 Board newBoard = currentBoard.clone();
                 if(newBoard.setTileIfPossible(spot, domainElement)) {
                     solutions = backtrack(newBoard, solutions);
@@ -43,11 +43,12 @@ public class Solve {
 
     private static ArrayList<Board> forwardcheck(Board currentBoard, ArrayList<Board> solutions) {
         counter++;
-        Coordinates spot = currentBoard.findFirstEmptySpot();
+        Coordinates spot = currentBoard.findSmallestDomainSpot();
 
         if(spot.x == -1 && spot.y == -1) {
             solutions.add(currentBoard);
         } else {
+//            for(int domainElement : currentBoard.sortDomainByOccurrences(currentBoard.getTile(spot).domain)) {
             for(Integer domainElement : currentBoard.getTile(spot).domain) {
                 Board newBoard = currentBoard.clone();
                 if(newBoard.setTileIfPossible(spot, domainElement) && newBoard.deleteFromDomain(spot)) {
