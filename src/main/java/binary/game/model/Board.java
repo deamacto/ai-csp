@@ -29,11 +29,35 @@ public class Board {
     }
 
     public boolean deleteFromDomain(Coordinates coordinates) {
-
+        return deleteFromDomainRepetitions(coordinates) && deleteFromDomainSameAmount(coordinates);
     }
 
     public boolean deleteFromDomainSameAmount(Coordinates cord) {
+        long countRow = Arrays.stream(board[cord.y]).filter(elem -> Objects.equals(elem.value, board[cord.y][cord.x].value)).count();
+        if(countRow == board.length/2) {
+            for(int i = 0; i < board[cord.y].length; i++) {
+                if(board[cord.y][i].value == null) {
+                    board[cord.y][i].domain.remove(board[cord.y][cord.x].value);
+                    if(board[cord.y][i].domain.isEmpty()) {
+                        return false;
+                    }
+                }
+            }
+        }
 
+        Field[] column = Arrays.stream(board).map(r -> r[cord.x]).toArray(Field[]::new);
+        long countColumn = Arrays.stream(column).filter(elem -> Objects.equals(elem.value, board[cord.y][cord.x].value)).count();
+        if(countColumn == board.length/2) {
+            for(int i = 0; i < board.length; i++) {
+                if(board[i][cord.x].value == null) {
+                    board[i][cord.x].domain.remove(board[cord.y][cord.x].value);
+                    if(board[i][cord.x].domain.isEmpty()) {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
     }
 
     public boolean deleteFromDomainRepetitions(Coordinates cord) {
