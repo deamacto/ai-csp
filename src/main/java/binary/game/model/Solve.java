@@ -22,7 +22,8 @@ public class Solve {
         if(spot.x == -1 && spot.y == -1) {
             solutions.add(currentBoard);
         } else {
-            for(int domainElement : Board.domain) {
+            //for(int domainElement : Board.domain) {
+            for(int domainElement : currentBoard.sortDomainByOccurrences(currentBoard.getTile(spot).domain)) {
                 Board newBoard = currentBoard.clone();
                 if(newBoard.setTileIfPossible(spot, domainElement)) {
                     solutions = backtrack(newBoard, solutions);

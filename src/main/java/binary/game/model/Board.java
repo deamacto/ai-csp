@@ -264,7 +264,7 @@ public class Board {
         return smallestCord;
     }
 
-    public ArrayList<Integer> sortDomainByOccurrences() {
+    public ArrayList<Integer> sortDomainByOccurrences(ArrayList<Integer> domain) {
         HashMap<Integer, Integer> occurrences = new HashMap<>();
         for(int elem : domain) {
             occurrences.put(elem, 0);
