@@ -2,8 +2,7 @@ package binary.game.model;
 
 import util.Coordinates;
 
-import java.util.Arrays;
-import java.util.Objects;
+import java.util.*;
 
 
 public class Board {
@@ -263,6 +262,28 @@ public class Board {
         }
 
         return smallestCord;
+    }
+
+    public ArrayList<Integer> sortDomainByOccurrences() {
+        HashMap<Integer, Integer> occurrences = new HashMap<>();
+        for(int elem : domain) {
+            occurrences.put(elem, 0);
+        }
+
+        for(int i = 0 ; i < board.length; i++) {
+            for(int j = 0; j < board[0].length; j++) {
+                if(occurrences.containsKey(board[i][j].value)) {
+                    occurrences.put(board[i][j].value, occurrences.get(board[i][j].value) + 1);
+                }
+            }
+        }
+
+        return new ArrayList<Integer>(occurrences
+                .entrySet()
+                .stream()
+                .sorted(Map.Entry.comparingByValue())
+                .map(Map.Entry::getKey)
+                .toList());
     }
 
     @Override

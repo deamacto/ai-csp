@@ -3,6 +3,9 @@ package futoshiki.game.model;
 import util.Coordinates;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class Board {
     private Field[][] board;
@@ -186,6 +189,28 @@ public class Board {
         }
 
         return smallestCord;
+    }
+
+    public ArrayList<Integer> sortDomainByOccurrences(ArrayList<Integer> domain) {
+        HashMap<Integer, Integer> occurrences = new HashMap<>();
+        for(int elem : domain) {
+            occurrences.put(elem, 0);
+        }
+
+        for(int i = 0 ; i < board.length; i++) {
+            for(int j = 0; j < board[0].length; j++) {
+                if(occurrences.containsKey(board[i][j].number)) {
+                    occurrences.put(board[i][j].number, occurrences.get(board[i][j].number) + 1);
+                }
+            }
+        }
+
+        return new ArrayList<Integer>(occurrences
+            .entrySet()
+            .stream()
+            .sorted(Map.Entry.comparingByValue())
+            .map(Map.Entry::getKey)
+            .toList());
     }
 
     @Override
