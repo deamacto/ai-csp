@@ -8,11 +8,19 @@ import futoshiki.game.model.Symbol;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class ReadFile {
 
     public static Board readFile(DataType dt) {
         Field[][] board = new Field[dt.size][dt.size];
+
+
+        int[] domain = new int[dt.size];
+        for(int i = 0; i < dt.size; i++) {
+            domain[i] = i+1;
+        }
 
         try{
             String content = new String(Files.readAllBytes(Paths.get(dt.file)));
@@ -41,7 +49,13 @@ public class ReadFile {
                             if(contentInLines[i].charAt(j) != 'x') {
                                 value = Character.getNumericValue(contentInLines[i].charAt(j));
                             }
-                            Field field = new Field(left, right, top, bottom, value);
+
+                            ArrayList<Integer> currentDomain = new ArrayList<>();
+                            for (int elem : domain) {
+                                currentDomain.add(elem);
+                            }
+
+                            Field field = new Field(left, right, top, bottom, value, currentDomain);
                             board[i/2][j/2] = field;
                         }
                     }
@@ -51,11 +65,6 @@ public class ReadFile {
 
         } catch (IOException e) {
             e.printStackTrace();
-        }
-
-        int[] domain = new int[dt.size];
-        for(int i = 0; i < dt.size; i++) {
-            domain[i] = i+1;
         }
 
         return new Board(board, domain);
