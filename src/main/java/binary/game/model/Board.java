@@ -32,10 +32,14 @@ public class Board {
 
     }
 
+    public boolean deleteFromDomainSameAmount(Coordinates cord) {
+
+    }
+
     public boolean deleteFromDomainRepetitions(Coordinates cord) {
         Field current = board[cord.y][cord.x];
         if(current.value != null) {
-            if(cord.x - 1 >= 0 && Objects.equals(board[cord.y][cord.x - 1].value, current.value) && cord.x + 1 < board.length) {
+            if(cord.x - 1 >= 0 && Objects.equals(board[cord.y][cord.x - 1].value, current.value) && cord.x + 1 < board.length && board[cord.y][cord.x + 1].value == null ) {
                 board[cord.y][cord.x + 1].domain.remove(current.value);
 
                 if( board[cord.y][cord.x + 1].domain.isEmpty()) {
@@ -43,7 +47,7 @@ public class Board {
                 }
             }
 
-            if(cord.x + 1 < board.length && Objects.equals(current.value, board[cord.y][cord.x + 1].value) && cord.x + 2 < board.length) {
+            if(cord.x + 1 < board.length && Objects.equals(current.value, board[cord.y][cord.x + 1].value) && cord.x + 2 < board.length && board[cord.y][cord.x + 2].value == null) {
                 board[cord.y][cord.x + 2].domain.remove(current.value);
 
                 if(board[cord.y][cord.x + 2].domain.isEmpty()) {
@@ -51,7 +55,7 @@ public class Board {
                 }
             }
 
-            if (cord.y - 1 >= 0 && Objects.equals(current.value, board[cord.y - 1][cord.x].value) && cord.y + 1 < board.length) {
+            if (cord.y - 1 >= 0 && Objects.equals(current.value, board[cord.y - 1][cord.x].value) && cord.y + 1 < board.length && board[cord.y + 1][cord.x].value == null) {
                 board[cord.y + 1][cord.x].domain.remove(current.value);
 
                 if(board[cord.y + 1][cord.x].domain.isEmpty()) {
@@ -59,7 +63,7 @@ public class Board {
                 }
             }
 
-            if(cord.y + 1 < board.length && Objects.equals(current.value, board[cord.y + 1][cord.x].value) && cord.y + 2 < board.length) {
+            if(cord.y + 1 < board.length && Objects.equals(current.value, board[cord.y + 1][cord.x].value) && cord.y + 2 < board.length && board[cord.y + 2][cord.x].value == null) {
                 board[cord.y + 2][cord.x].domain.remove(current.value);
 
                 if(board[cord.y + 2][cord.x].domain.isEmpty()) {
