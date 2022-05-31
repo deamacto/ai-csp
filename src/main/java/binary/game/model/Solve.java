@@ -44,7 +44,7 @@ public class Solve {
             for(Integer domainElement : currentBoard.getTile(spot).domain) {
                 Board newBoard = currentBoard.clone();
                 if(newBoard.setTileIfPossible(spot, domainElement) && newBoard.deleteFromDomain(spot)) {
-                    solutions = backtrack(newBoard, solutions);
+                    solutions = forwardcheck(newBoard, solutions);
                 }
             }
         }
