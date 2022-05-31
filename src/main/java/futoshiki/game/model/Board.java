@@ -27,8 +27,55 @@ public class Board {
         return true;
     }
 
-    public boolean deleteFromDomain() {
+    public boolean deleteFromDomain(Coordinates  coordinates) {
+        return deleteFromDomainConstraints(coordinates) && deleteFromDomainSameNumber(coordinates);
+    }
 
+    private boolean deleteFromDomainConstraints(Coordinates cord) {
+        Field field = board[cord.y][cord.x];
+
+        if(field.leftRelation != Symbol.NONE && board[cord.y][cord.x - 1].number == null) {
+            deleteDomainRelation(field.number, field.leftRelation, new Coordinates(cord.x - 1, cord.y));
+
+            if(board[cord.y][cord.x - 1].domain.isEmpty()) {
+                return false;
+            }
+        }
+
+        if(field.rightRelation != Symbol.NONE && board[cord.y][cord.x + 1].number == null) {
+            deleteDomainRelation(field.number, field.leftRelation, new Coordinates(cord.x + 1, cord.y));
+
+            if(board[cord.y][cord.x + 1].domain.isEmpty()) {
+                return false;
+            }
+        }
+
+        if(field.topRelation != Symbol.NONE && board[cord.y - 1][cord.x].number == null) {
+            deleteDomainRelation(field.number, field.leftRelation, new Coordinates(cord.x, cord.y - 1));
+
+            if(board[cord.y - 1][cord.x].domain.isEmpty()) {
+                return false;
+            }
+        }
+
+        if(field.bottomRelation != Symbol.NONE && board[cord.y + 1][cord.x].number == null) {
+            deleteDomainRelation(field.number, field.leftRelation, new Coordinates(cord.x, cord.y + 1));
+
+            if(board[cord.y + 1][cord.x].domain.isEmpty()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private void deleteDomainRelation(int number, Symbol relation, Coordinates fieldCoordinates) {
+        Field fieldToUpdate = board[fieldCoordinates.y][fieldCoordinates.x];
+
+        if(relation == Symbol.GREATER) {
+            fieldToUpdate.domain.removeIf(elem -> elem >= number);
+        } else if(relation == Symbol.LESSTHAN) {
+            fieldToUpdate.domain.removeIf(elem -> elem <= number);
+        }
     }
 
     private boolean deleteFromDomainSameNumber(Coordinates cord) {
