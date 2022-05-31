@@ -32,10 +32,10 @@ public class Solve {
     public static ArrayList<Board> forwardchecking(Board startingBoard) {
         ArrayList<Board> solutions = new ArrayList<>();
         Board currentBoard = startingBoard.clone();
-        return forwardchwck(currentBoard, solutions);
+        return forwardcheck(currentBoard, solutions);
     }
 
-    private static ArrayList<Board> forwardchwck(Board currentBoard, ArrayList<Board> solutions) {
+    private static ArrayList<Board> forwardcheck(Board currentBoard, ArrayList<Board> solutions) {
         Coordinates spot = currentBoard.findFirstEmptySpot();
 
         if(spot.x == -1 && spot.y == -1) {
