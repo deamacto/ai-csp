@@ -13,6 +13,10 @@ public class Board {
         this.domain = domain;
     }
 
+    public Field getTile(Coordinates coordinates) {
+        return board[coordinates.y][coordinates.x];
+    }
+
     public boolean setFieldIfPossible(Coordinates coordinates, int value) {
         if (board[coordinates.y][coordinates.x].number != null) {
             return false;
@@ -43,7 +47,7 @@ public class Board {
         }
 
         if(field.rightRelation != Symbol.NONE && board[cord.y][cord.x + 1].number == null) {
-            deleteDomainRelation(field.number, field.leftRelation, new Coordinates(cord.x + 1, cord.y));
+            deleteDomainRelation(field.number, field.rightRelation, new Coordinates(cord.x + 1, cord.y));
 
             if(board[cord.y][cord.x + 1].domain.isEmpty()) {
                 return false;
@@ -51,7 +55,7 @@ public class Board {
         }
 
         if(field.topRelation != Symbol.NONE && board[cord.y - 1][cord.x].number == null) {
-            deleteDomainRelation(field.number, field.leftRelation, new Coordinates(cord.x, cord.y - 1));
+            deleteDomainRelation(field.number, field.topRelation, new Coordinates(cord.x, cord.y - 1));
 
             if(board[cord.y - 1][cord.x].domain.isEmpty()) {
                 return false;
@@ -59,7 +63,7 @@ public class Board {
         }
 
         if(field.bottomRelation != Symbol.NONE && board[cord.y + 1][cord.x].number == null) {
-            deleteDomainRelation(field.number, field.leftRelation, new Coordinates(cord.x, cord.y + 1));
+            deleteDomainRelation(field.number, field.bottomRelation, new Coordinates(cord.x, cord.y + 1));
 
             if(board[cord.y + 1][cord.x].domain.isEmpty()) {
                 return false;
@@ -198,9 +202,9 @@ public class Board {
     @Override
     public Board clone() {
         Field[][] newBoard = new Field[board.length][board.length];
-        ArrayList<Integer> newDomain = new ArrayList<>();
         for(int i = 0; i < board.length; i++) {
             for(int j = 0; j < board.length; j++) {
+                ArrayList<Integer> newDomain = new ArrayList<>();
                 for(Integer domainElement : board[i][j].domain) {
                     newDomain.add(domainElement);
                 }
