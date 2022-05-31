@@ -14,6 +14,10 @@ public class Board {
         this.board = board;
     }
 
+    public Field getTile(Coordinates coordinates) {
+        return board[coordinates.y][coordinates.x];
+    }
+
     public boolean setTileIfPossible(Coordinates coordinates, Integer value) {
         if (board[coordinates.y][coordinates.x].value != null) {
             return false;
@@ -32,7 +36,7 @@ public class Board {
         return deleteFromDomainRepetitions(coordinates) && deleteFromDomainSameAmount(coordinates);
     }
 
-    public boolean deleteFromDomainSameAmount(Coordinates cord) {
+    private boolean deleteFromDomainSameAmount(Coordinates cord) {
         long countRow = Arrays.stream(board[cord.y]).filter(elem -> Objects.equals(elem.value, board[cord.y][cord.x].value)).count();
         if(countRow == board.length/2) {
             for(int i = 0; i < board[cord.y].length; i++) {
@@ -60,7 +64,7 @@ public class Board {
         return true;
     }
 
-    public boolean deleteFromDomainRepetitions(Coordinates cord) {
+    private boolean deleteFromDomainRepetitions(Coordinates cord) {
         Field current = board[cord.y][cord.x];
         if(current.value != null) {
             if(cord.x - 1 >= 0 && Objects.equals(board[cord.y][cord.x - 1].value, current.value) && cord.x + 1 < board.length && board[cord.y][cord.x + 1].value == null ) {
