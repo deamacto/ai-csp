@@ -28,6 +28,48 @@ public class Board {
         return true;
     }
 
+    public boolean deleteFromDomain(Coordinates coordinates) {
+
+    }
+
+    public boolean deleteFromDomainRepetitions(Coordinates cord) {
+        Field current = board[cord.y][cord.x];
+        if(current.value != null) {
+            if(cord.x - 1 >= 0 && Objects.equals(board[cord.y][cord.x - 1].value, current.value) && cord.x + 1 < board.length) {
+                board[cord.y][cord.x + 1].domain.remove(current.value);
+
+                if( board[cord.y][cord.x + 1].domain.isEmpty()) {
+                    return false;
+                }
+            }
+
+            if(cord.x + 1 < board.length && Objects.equals(current.value, board[cord.y][cord.x + 1].value) && cord.x + 2 < board.length) {
+                board[cord.y][cord.x + 2].domain.remove(current.value);
+
+                if(board[cord.y][cord.x + 2].domain.isEmpty()) {
+                    return false;
+                }
+            }
+
+            if (cord.y - 1 >= 0 && Objects.equals(current.value, board[cord.y - 1][cord.x].value) && cord.y + 1 < board.length) {
+                board[cord.y + 1][cord.x].domain.remove(current.value);
+
+                if(board[cord.y + 1][cord.x].domain.isEmpty()) {
+                    return false;
+                }
+            }
+
+            if(cord.y + 1 < board.length && Objects.equals(current.value, board[cord.y + 1][cord.x].value) && cord.y + 2 < board.length) {
+                board[cord.y + 2][cord.x].domain.remove(current.value);
+
+                if(board[cord.y + 2][cord.x].domain.isEmpty()) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
     public boolean checkNotThree(Coordinates coordinates) {
         Integer lastNumber = -1;
         int howMany = 0;
