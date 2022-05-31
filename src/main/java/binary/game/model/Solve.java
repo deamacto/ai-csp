@@ -6,13 +6,17 @@ import java.util.ArrayList;
 
 public class Solve {
 
+    public static int counter;
+
     public static ArrayList<Board> backtracking(Board emptyBoard) {
+        counter = 0;
         ArrayList<Board> solutions = new ArrayList<>();
         Board currentBoard = emptyBoard.clone();
         return backtrack(currentBoard, solutions);
     }
 
     private static ArrayList<Board> backtrack(Board currentBoard, ArrayList<Board> solutions) {
+        counter++;
         Coordinates spot = currentBoard.findFirstEmptySpot();
 
         if(spot.x == -1 && spot.y == -1) {
@@ -30,12 +34,14 @@ public class Solve {
     }
 
     public static ArrayList<Board> forwardchecking(Board startingBoard) {
+        counter = 0;
         ArrayList<Board> solutions = new ArrayList<>();
         Board currentBoard = startingBoard.clone();
         return forwardcheck(currentBoard, solutions);
     }
 
     private static ArrayList<Board> forwardcheck(Board currentBoard, ArrayList<Board> solutions) {
+        counter++;
         Coordinates spot = currentBoard.findFirstEmptySpot();
 
         if(spot.x == -1 && spot.y == -1) {
